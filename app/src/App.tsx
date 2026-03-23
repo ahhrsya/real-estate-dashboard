@@ -1,8 +1,14 @@
-import React from "react"
 import { Routes, Route } from "react-router-dom"
 import { Sidebar, TopBar } from "./components/Layout"
 import { Dashboard } from "./components/Dashboard"
-import { EmptyState } from "./components/EmptyState"
+import { LeadInbox } from "./components/pages/LeadInbox"
+import { PropertyListings } from "./components/pages/PropertyListings"
+import { ViewingScheduler } from "./components/pages/ViewingScheduler"
+import { OfferPipeline } from "./components/pages/OfferPipeline"
+import { AgentPerformance } from "./components/pages/AgentPerformance"
+import { CommissionTracker } from "./components/pages/CommissionTracker"
+import { Settings } from "./components/pages/Settings"
+import { PropertyDetail } from "./components/pages/PropertyDetail"
 
 function App() {
   return (
@@ -13,13 +19,14 @@ function App() {
         <main className="flex-1 overflow-y-auto relative">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/inbox" element={<div className="p-8"><EmptyState title="Lead Inbox" description="Inbox leads filterable by portal will be developed here. Data is merged from Zillow, Rightmove, etc." /></div>} />
-            <Route path="/listings" element={<div className="p-8"><EmptyState title="Property Listings" description="Grid view to search and filter active property listings." /></div>} />
-            <Route path="/viewings" element={<div className="p-8"><EmptyState title="Viewing Scheduler" description="Calendar-based scheduler for property viewings with leads." /></div>} />
-            <Route path="/offers" element={<div className="p-8"><EmptyState title="Offer Pipeline" description="Kanban board implementation for dragging offers through stages." /></div>} />
-            <Route path="/performance" element={<div className="p-8"><EmptyState title="Agent Performance" description="Leaderboard and detailed conversion reports." /></div>} />
-            <Route path="/commission" element={<div className="p-8"><EmptyState title="Commission Tracker" description="Monthly commission payouts calculation and deals chart." /></div>} />
-            <Route path="/settings" element={<div className="p-8"><EmptyState title="Integrations & Settings" description="Setup portal API integrations and notification rules." /></div>} />
+            <Route path="/inbox" element={<LeadInbox />} />
+            <Route path="/listings" element={<PropertyListings />} />
+            <Route path="/properties/:id" element={<PropertyDetail />} />
+            <Route path="/viewings" element={<ViewingScheduler />} />
+            <Route path="/offers" element={<OfferPipeline />} />
+            <Route path="/performance" element={<AgentPerformance />} />
+            <Route path="/commission" element={<CommissionTracker />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>
