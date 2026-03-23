@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { TopBar } from "./components/Layout"
+import { Sidebar, TopBar } from "./components/Layout"
 import { Dashboard } from "./components/Dashboard"
 import { LeadInbox } from "./components/pages/LeadInbox"
 import { PropertyListings } from "./components/pages/PropertyListings"
@@ -12,13 +12,13 @@ import { PropertyDetail } from "./components/pages/PropertyDetail"
 
 function App() {
   return (
-    <div className="min-h-screen bg-brand-bg xl:p-8 flex items-center justify-center font-sans tracking-tight text-gray-800 selection:bg-brand-orange/20">
-      <div className="w-full max-w-[1550px] md:h-[92vh] flex flex-col xl:rounded-[32px] overflow-hidden bg-white xl:shadow-2xl ring-1 ring-black/5">
+    <div className="flex h-screen bg-bg-page font-sans text-brand-navy selection:bg-brand-gold/20">
+      <Sidebar />
+      <div className="flex-1 flex flex-col pl-[260px] overflow-hidden">
         <TopBar />
-        <main className="flex-1 overflow-hidden relative border-t border-white/5">
+        <main className="flex-1 overflow-y-auto relative">
           <Routes>
-            <Route path="/" element={<PropertyListings />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/inbox" element={<LeadInbox />} />
             <Route path="/listings" element={<PropertyListings />} />
             <Route path="/properties/:id" element={<PropertyDetail />} />

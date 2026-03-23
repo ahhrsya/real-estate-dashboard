@@ -9,16 +9,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-brand-navy: #0C1B33;
-  --color-brand-gold: #C9A84C;
-  --color-brand-gold-light: #FDF6E3;
+  --color-brand-navy: #21212B;
+  --color-brand-gold: #ED5A3B;
+  --color-brand-gold-light: #FDF2F0;
   --color-bg-white: #FFFFFF;
-  --color-bg-page: #F7F8FA;
-  --color-bg-sidebar: #0C1B33;
-  --color-brand-orange: #ED5A3B;
-  --color-brand-dark: #1E1E24;
-  --color-brand-bg: #EAEBEF;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --color-bg-page: #F3F4F6;
+  --color-bg-sidebar: #21212B;
+  --font-serif: 'Inter', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }

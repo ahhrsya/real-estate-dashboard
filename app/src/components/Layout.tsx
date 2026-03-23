@@ -1,55 +1,75 @@
-import { Search, Bell, ChevronDown } from "lucide-react"
+import React from "react"
+import { Link, useLocation } from "react-router-dom"
+import { LayoutDashboard, Users, Grid, Calendar, Award, TrendingUp, Search, Bell, DollarSign, Settings } from "lucide-react"
+
+export function Sidebar() {
+  const location = useLocation()
+  
+  const navItems = [
+    { label: "Dashboard", icon: LayoutDashboard, path: "/" },
+    { label: "Lead Inbox", icon: Users, path: "/inbox" },
+    { label: "Listings", icon: Grid, path: "/listings" },
+    { label: "Viewings", icon: Calendar, path: "/viewings" },
+    { label: "Offers", icon: TrendingUp, path: "/offers" },
+    { label: "Performance", icon: Award, path: "/performance" },
+    { label: "Commission", icon: DollarSign, path: "/commission" },
+    { label: "Settings", icon: Settings, path: "/settings" },
+  ]
+
+  return (
+    <div className="w-[260px] bg-brand-navy text-white h-screen flex flex-col fixed left-0 top-0">
+      <div className="px-6 py-8">
+        <h1 className="text-2xl font-serif font-bold tracking-wide">PropTrack<span className="text-brand-gold">.</span></h1>
+      </div>
+      
+      <nav className="flex-1 px-4 space-y-2">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path
+          return (
+            <Link 
+              key={item.label}
+              to={item.path}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-white/10 text-white font-semibold' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="text-sm">{item.label}</span>
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="p-6">
+        <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Agent" className="w-10 h-10 rounded-full object-cover border-2 border-brand-gold/50" />
+          <div className="text-left">
+            <p className="text-sm font-semibold">Jessica Park</p>
+            <p className="text-xs text-white/50">Senior Agent, NYC</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function TopBar() {
   return (
-    <div className="h-[88px] bg-brand-dark shrink-0 flex items-center justify-between px-8 text-white z-20">
-      {/* Brand logo */}
-      <div className="flex items-center gap-3 w-[260px] shrink-0">
-        <div className="w-8 h-8 rounded-t-lg rounded-bl-lg rounded-br-sm bg-brand-orange relative flex items-center justify-center shadow-[inset_0_2px_4px_rgba(255,255,255,0.3)]">
-          <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[8px] border-transparent border-b-white absolute top-2.5"></div>
-        </div>
-        <h1 className="text-xl font-bold font-sans tracking-tight">
-          Roemah
-          <span className="text-[9px] bg-[#3B3B42] text-orange-400 px-1.5 py-0.5 rounded-md font-bold uppercase ml-2 align-middle border border-white/5 shadow-sm">
-            Beta
-          </span>
-        </h1>
+    <div className="h-[76px] bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-10 w-full">
+      <div className="flex-1 max-w-xl relative">
+        <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input 
+          type="text" 
+          placeholder="Search leads, properties, or offers..." 
+          className="w-full bg-bg-page border-none rounded-full py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-brand-gold/50 outline-none"
+        />
       </div>
-
-      {/* Search Input */}
-      <div className="flex-1 w-full max-w-2xl mx-12">
-        <div className="bg-[#2A2B31] rounded-full h-[52px] flex items-center px-2 border border-white/10 shadow-inner">
-          <input 
-            type="text" 
-            placeholder="Search Anything..." 
-            className="bg-transparent text-sm text-gray-200 placeholder-gray-500 px-4 focus:outline-none flex-1 font-medium" 
-          />
-          <div className="w-px h-6 bg-white/10 mx-2"></div>
-          <button className="text-sm text-gray-400 hover:text-white px-3 font-medium transition whitespace-nowrap">Add rooms</button>
-          <div className="w-px h-6 bg-white/10 mx-2"></div>
-          <button className="text-sm text-gray-400 hover:text-white px-3 font-medium transition whitespace-nowrap">Add guest</button>
-          <button className="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white ml-2 hover:bg-orange-600 transition shadow-sm shrink-0">
-            <Search className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Right Actions */}
-      <div className="flex items-center gap-6 shrink-0">
-        <button className="w-11 h-11 rounded-full bg-[#2A2B31] flex items-center justify-center text-gray-400 hover:text-white transition border border-white/5 relative">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-3 right-3 w-2 h-2 bg-brand-orange rounded-full"></span>
+      <div className="flex items-center gap-6 pl-8">
+        <button className="bg-brand-gold hover:bg-brand-gold/90 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-sm transition transform hover:scale-105">
+          + New Lead
         </button>
-        <div className="flex items-center gap-3 cursor-pointer group hover:bg-[#2A2B31] p-1.5 pr-3 rounded-full transition border border-transparent hover:border-white/5">
-          <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-            <img src="https://ui-avatars.com/api/?name=Cansaas+Agency&background=0D9488&color=fff&rounded=true&bold=true" alt="Cansaas" className="w-full h-full rounded-full" />
-          </div>
-          <div className="hidden lg:block text-left mr-1">
-            <p className="text-sm font-bold text-gray-100 group-hover:text-white transition leading-tight">Cansaas Agency</p>
-            <p className="text-[11px] text-gray-400 font-medium">Platinum Account</p>
-          </div>
-          <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-white transition" />
-        </div>
+        <button className="relative text-gray-400 hover:text-brand-navy transition">
+          <Bell className="w-6 h-6" />
+          <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+        </button>
       </div>
     </div>
   )
