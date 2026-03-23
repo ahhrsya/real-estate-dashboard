@@ -63,6 +63,7 @@ export function PropertyListings() {
   const [activeCategory, setActiveCategory] = useState("Large house")
   const [searchQuery, setSearchQuery] = useState("")
   const [isMapReady, setIsMapReady] = useState(false)
+  const [showFilters, setShowFilters] = useState(true)
 
   useEffect(() => {
     setIsMapReady(true)
@@ -72,9 +73,9 @@ export function PropertyListings() {
     return L.divIcon({
       className: 'bg-transparent border-none',
       html: `
-        <div class="flex items-center gap-1.5 bg-white rounded-full px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-gray-100 transition-transform whitespace-nowrap min-w-max" style="transform: translate(-50%, -100%); margin-top: -10px;">
-            <img src="${image}" class="w-6 h-6 rounded-full border border-gray-100 pointer-events-none" />
-            <span class="text-[11px] font-bold text-gray-800 pr-1 select-none pointer-events-none">${price}</span>
+        <div class="flex items-center gap-1.5 bg-white rounded-lg px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.15)] border border-gray-200 transition-transform whitespace-nowrap min-w-max hover:scale-110 hover:border-blue-400 hover:text-blue-600 cursor-pointer" style="transform: translate(-50%, -100%); margin-top: -5px;">
+            <img src="${image}" class="w-6 h-6 rounded-md border border-gray-100 pointer-events-none" />
+            <span class="text-[12px] font-bold pr-1 select-none pointer-events-none text-inherit">${price}</span>
         </div>
       `,
       iconSize: [0, 0],
@@ -86,177 +87,188 @@ export function PropertyListings() {
 
   return (
     <div className="flex h-[calc(100vh-76px)] overflow-hidden w-full bg-white animate-in fade-in duration-500">
-      {/* LEFT COLUMN: Filters & Grid */}
-      <div className="w-[55%] flex flex-col h-full bg-white border-r border-gray-100 z-10 relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
-        <div className="p-6 border-b border-gray-50 flex-shrink-0">
-          
-          {/* Top Pill Categories */}
-          <div className="flex items-center gap-3 overflow-x-auto custom-scrollbar pb-2">
+      
+      {/* LEFT COLUMN: Filters & Grid (50:50 Layout) */}
+      <div className="w-1/2 flex flex-col h-full bg-white border-r border-gray-100 z-10 relative shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        
+        {/* Categories Header */}
+        <div className="p-5 border-b border-gray-100 flex-shrink-0 bg-white">
+          <div className="flex items-center gap-3 overflow-x-auto custom-scrollbar">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border font-semibold text-sm shrink-0 shadow-sm transition-all focus:ring-2 focus:ring-blue-100 ${showFilters ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700' : 'border-blue-200 text-blue-600 bg-blue-50/40 hover:bg-blue-50'}`}
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+            </button>
+            
+            <div className="w-[1px] h-8 bg-gray-200 mx-1 shrink-0"></div>
+
             {categories.map((cat) => (
               <button 
                 key={cat} 
                 onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-semibold transition border shadow-sm ${activeCategory === cat ? 'bg-blue-50/50 text-blue-600 border-blue-200' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+                className={`whitespace-nowrap px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border shadow-sm ${activeCategory === cat ? 'bg-blue-50/80 text-blue-600 border-blue-200 shadow-blue-100' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}
               >
                 {cat}
               </button>
             ))}
-            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-full text-gray-500 hover:bg-gray-50 shrink-0 shadow-sm">
+            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-100 shrink-0 shadow-sm transition">
               <ChevronRight className="w-4 h-4" />
-            </button>
-            <div className="flex-1"></div>
-            <button className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-blue-200 text-blue-600 font-semibold bg-blue-50/20 hover:bg-blue-50 shrink-0 shadow-sm transition">
-              <SlidersHorizontal className="w-4 h-4" />
-              Filters
-            </button>
-          </div>
-
-          {/* Form Filters */}
-          <div className="mt-8 grid grid-cols-2 gap-8">
-            <div>
-              <label className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-widest text-[11px]">Location</label>
-              <div className="flex items-center justify-between border border-gray-200 rounded-2xl px-4 py-3 bg-gray-50/50 hover:bg-white transition cursor-pointer">
-                <div className="flex items-center gap-3 text-gray-800 font-bold text-[13px]">
-                  <MapPin className="w-4 h-4 text-gray-400" /> Yogyakarta, Indonesia
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </div>
-            </div>
-            <div>
-              <label className="text-gray-500 text-sm font-semibold mb-2 block uppercase tracking-widest text-[11px]">Range from you</label>
-              <div className="flex items-center justify-between border border-gray-200 rounded-2xl px-4 py-3 bg-gray-50/50 hover:bg-white transition cursor-pointer">
-                <div className="flex items-center gap-3 text-gray-800 font-bold text-[13px]">
-                  <MapPin className="w-4 h-4 text-gray-400" /> 24km
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </div>
-            </div>
-          </div>
-
-          {/* Price Range */}
-          <div className="mt-8">
-            <label className="text-gray-500 text-sm font-semibold mb-6 block uppercase tracking-widest text-[11px]">Price Range</label>
-            <div className="relative px-2 mb-8 mt-2">
-              <div className="h-1 bg-gray-100 rounded-full w-full"></div>
-              <div className="absolute top-0 left-[20%] right-[30%] h-1 bg-blue-600 rounded-full"></div>
-              <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-5 h-5 bg-white border border-gray-200 rounded-full shadow-md cursor-pointer hover:scale-110 transition"></div>
-              <div className="absolute top-1/2 -translate-y-1/2 right-[30%] w-5 h-5 bg-white border border-gray-200 rounded-full shadow-md cursor-pointer hover:scale-110 transition"></div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 bg-gray-50/50 flex justify-between items-center transition focus-within:bg-white focus-within:border-blue-200 focus-within:ring-2 focus-within:ring-blue-100">
-                <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
-                  <span className="text-gray-400">$</span> <input type="text" defaultValue="1450" className="w-full bg-transparent outline-none" />
-                </div>
-                <span className="text-gray-400 text-xs font-semibold uppercase tracking-wider">min</span>
-              </div>
-              <div className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 bg-gray-50/50 flex justify-between items-center transition focus-within:bg-white focus-within:border-blue-200 focus-within:ring-2 focus-within:ring-blue-100">
-                 <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
-                  <span className="text-gray-400">$</span> <input type="text" defaultValue="2342,00" className="w-full bg-transparent outline-none" />
-                </div>
-                <span className="text-gray-400 text-xs font-semibold uppercase tracking-wider">max</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Architecture Types */}
-          <div className="mt-10 mb-6">
-            <label className="text-gray-500 text-sm font-semibold mb-5 block uppercase tracking-widest text-[11px]">Type of Architecture</label>
-            <div className="grid grid-cols-3 gap-4">
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="w-5 h-5 rounded-md border border-blue-600 bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm transition group-hover:bg-blue-700">
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <p className="font-bold text-[13px] text-gray-800 leading-tight">Modern</p>
-                  <p className="text-[10px] text-gray-400 mt-1 leading-snug pr-2">Modern design with great view</p>
-                </div>
-              </label>
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="w-5 h-5 rounded-md border border-gray-200 flex items-center justify-center shrink-0 mt-0.5 bg-gray-50 transition group-hover:border-blue-300">
-                </div>
-                <div>
-                  <p className="font-bold text-[13px] text-gray-800 leading-tight">Minimalist</p>
-                  <p className="text-[10px] text-gray-400 mt-1 leading-snug pr-2">Contemporary clean space</p>
-                </div>
-              </label>
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <div className="w-5 h-5 rounded-md border border-gray-200 flex items-center justify-center shrink-0 mt-0.5 bg-gray-50 transition group-hover:border-blue-300">
-                </div>
-                <div>
-                  <p className="font-bold text-[13px] text-gray-800 leading-tight">Luxury</p>
-                  <p className="text-[10px] text-gray-400 mt-1 leading-snug pr-2">Premium amenities inside</p>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center pt-8 border-t border-gray-100">
-            <button className="px-6 py-3 rounded-full border border-gray-200 text-gray-600 font-bold text-sm hover:bg-gray-50 transition">
-              Clear all filters
-            </button>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-sm transition shadow-lg shadow-blue-600/30">
-              Show ({filteredProperties.length}) places
             </button>
           </div>
         </div>
 
-        {/* Property Grid */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50 custom-scrollbar">
-          <div className="grid grid-cols-2 gap-6">
-            {filteredProperties.map(p => (
-              <div key={p.id} className="bg-white rounded-[24px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-blue-900/5 transition duration-500 group cursor-pointer">
-                <div className="relative h-48 w-full p-3">
-                  <img src={p.image} alt={p.title} className="w-full h-full object-cover rounded-2xl group-hover:scale-[1.03] transition duration-700" />
-                  <button className="absolute top-5 right-5 w-8 h-8 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center hover:bg-black/40 transition">
-                    <Heart className="w-4 h-4 text-white hover:text-red-500 transition" />
-                  </button>
-                  <div className="absolute bottom-5 left-5 flex items-center gap-2 bg-black/40 backdrop-blur-md rounded-full pr-3 pl-1 py-1 shadow-sm">
-                    <img src={p.agentImg} className="w-5 h-5 rounded-full border border-white/20" />
-                    <span className="text-[10px] text-white font-medium">{p.agent} <Check className="w-2.5 h-2.5 inline text-blue-400 ml-0.5 bg-white rounded-full p-[1px] shadow-sm"/></span>
+        {/* Form Filters (Collapsible via state) */}
+        {showFilters && (
+          <div className="px-6 pb-6 border-b border-gray-100 flex-shrink-0 bg-gray-50/40 shadow-inner animate-in slide-in-from-top-4 fade-in duration-300">
+            {/* Form Filters Grid */}
+            <div className="mt-5 grid grid-cols-2 gap-6">
+              <div>
+                <label className="text-gray-500 text-sm font-bold mb-2 block uppercase tracking-widest text-[10px]">Location</label>
+                <div className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 bg-white hover:border-gray-300 transition cursor-pointer shadow-sm">
+                  <div className="flex items-center gap-3 text-gray-800 font-bold text-[13px]">
+                    <MapPin className="w-4 h-4 text-gray-400" /> Yogyakarta, Indonesia
                   </div>
-                  <div className="absolute bottom-5 right-5 flex gap-1">
-                     <span className="w-4 h-1.5 rounded-full bg-white shadow-sm"></span>
-                     <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-                     <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                </div>
+              </div>
+              <div>
+                <label className="text-gray-500 text-sm font-bold mb-2 block uppercase tracking-widest text-[10px]">Range from you</label>
+                <div className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 bg-white hover:border-gray-300 transition cursor-pointer shadow-sm">
+                  <div className="flex items-center gap-3 text-gray-800 font-bold text-[13px]">
+                    <MapPin className="w-4 h-4 text-gray-400" /> 24km
+                  </div>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                </div>
+              </div>
+            </div>
+
+            {/* Price Range */}
+            <div className="mt-6">
+              <label className="text-gray-500 text-sm font-bold mb-5 block uppercase tracking-widest text-[10px]">Price Range</label>
+              <div className="relative px-2 mb-6">
+                <div className="h-1.5 bg-gray-200 rounded-full w-full"></div>
+                <div className="absolute top-0 left-[20%] right-[30%] h-1.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"></div>
+                <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-6 h-6 bg-white border-2 border-blue-600 rounded-lg shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
+                <div className="absolute top-1/2 -translate-y-1/2 right-[30%] w-6 h-6 bg-white border-2 border-blue-600 rounded-lg shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 bg-white shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
+                  <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
+                    <span className="text-gray-400">$</span> <input type="text" defaultValue="1450" className="w-full bg-transparent outline-none font-mono" />
+                  </div>
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">min</span>
+                </div>
+                <div className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 bg-white shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
+                  <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
+                    <span className="text-gray-400">$</span> <input type="text" defaultValue="2342,00" className="w-full bg-transparent outline-none font-mono" />
+                  </div>
+                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">max</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Architecture Types Grid */}
+            <div className="mt-8 mb-4">
+              <label className="text-gray-500 text-sm font-bold mb-4 block uppercase tracking-widest text-[10px]">Architecture Design</label>
+              <div className="grid grid-cols-3 gap-4">
+                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-blue-200 rounded-xl p-3 shadow-sm shadow-blue-50 transition hover:border-blue-300">
+                  <div className="w-5 h-5 rounded border border-blue-600 bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm transition">
+                    <Check className="w-3 h-3" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Modern</p>
+                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Glass & steel</p>
+                  </div>
+                </label>
+                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300">
+                  <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-gray-50 transition group-hover:border-blue-400">
+                  </div>
+                  <div>
+                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Minimalist</p>
+                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Clean spaces</p>
+                  </div>
+                </label>
+                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300">
+                  <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-gray-50 transition group-hover:border-blue-400">
+                  </div>
+                  <div>
+                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Luxury</p>
+                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Premium build</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center pt-5 mt-5 border-t border-gray-200/60">
+              <button className="px-5 py-2.5 rounded-xl text-gray-600 font-bold text-sm hover:bg-gray-200 hover:text-gray-800 transition">
+                Clear all filters
+              </button>
+              <button className="bg-gray-900 hover:bg-black text-white px-8 py-2.5 rounded-xl font-bold text-sm transition shadow-lg shadow-gray-900/20">
+                Show ({filteredProperties.length}) results
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Property Grid (Auto fills rest of height) */}
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50 custom-scrollbar">
+          <div className="grid grid-cols-2 gap-5">
+            {filteredProperties.map(p => (
+              <div key={p.id} className="bg-white rounded-[16px] overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition duration-300 group cursor-pointer flex flex-col hover:border-blue-200 hover:ring-1 hover:ring-blue-100">
+                <div className="relative h-44 w-full p-2.5">
+                  <img src={p.image} alt={p.title} className="w-full h-full object-cover rounded-xl group-hover:scale-[1.02] transition duration-700" />
+                  <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/40 transition">
+                    <Heart className="w-4 h-4 text-white hover:text-red-500 transition hover:fill-red-500" />
+                  </button>
+                  <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-md rounded-lg pr-2 min-w-0 max-w-[80%] shadow-sm">
+                    <img src={p.agentImg} className="w-6 h-6 rounded-l-lg object-cover" />
+                    <span className="text-[10px] text-white font-medium truncate pr-1">{p.agent}</span>
                   </div>
                 </div>
-                <div className="p-5 pt-2">
-                  <h3 className="font-bold text-[15px] text-gray-900 group-hover:text-blue-600 transition truncate">{p.title}</h3>
-                  <div className="flex justify-between items-end mt-1.5">
-                    <p className="text-[11px] font-semibold text-gray-400">{p.location}</p>
-                    <p className="font-bold font-mono text-blue-600 text-[18px] tracking-tight">{p.price}</p>
+                <div className="p-4 pt-1 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-bold text-[14px] text-gray-900 group-hover:text-blue-600 transition line-clamp-1">{p.title}</h3>
+                    <p className="text-[11px] font-semibold text-gray-500 mt-0.5 flex items-center gap-1"><MapPin className="w-3 h-3" />{p.location}</p>
+                  </div>
+                  <div className="flex justify-between items-end mt-3 border-t border-gray-50 pt-2">
+                    <p className="font-bold font-mono text-blue-600 text-lg tracking-tight leading-none">{p.price}</p>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-0.5 rounded">Sale</span>
                   </div>
                 </div>
               </div>
             ))}
             
             {filteredProperties.length === 0 && (
-               <div className="col-span-2 flex flex-col items-center justify-center py-20 text-gray-400">
+               <div className="col-span-2 flex flex-col items-center justify-center py-24 text-gray-400">
                   <Search className="w-12 h-12 mb-4 opacity-20" />
-                  <p className="font-semibold text-sm">No properties found in this area.</p>
+                  <p className="font-semibold text-sm">No properties found.</p>
                </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* RIGHT COLUMN: Map */}
-      <div className="flex-1 relative bg-blue-50/50 overflow-hidden isolate">
+      {/* RIGHT COLUMN: Map (50:50 Layout) */}
+      <div className="w-1/2 relative bg-blue-50/50 overflow-hidden border-l border-gray-200">
         
         {/* Map Search Bar Layering over Map */}
-        <div className="absolute top-6 inset-x-0 mx-auto w-3/4 z-[1000] drop-shadow-xl pointer-events-none">
-          <div className="bg-white rounded-full p-2 flex items-center border border-gray-100 shadow-sm pointer-events-auto transition focus-within:ring-2 focus-within:ring-blue-100">
-             <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+        <div className="absolute top-6 inset-x-0 mx-auto w-3/4 max-w-md z-[1000] drop-shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+          <div className="bg-white rounded-xl p-1.5 flex items-center border border-gray-200 shadow-sm transition focus-within:ring-4 focus-within:ring-blue-100 focus-within:border-blue-300">
+             <div className="w-9 h-9 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center shrink-0">
                <Search className="w-4 h-4" />
              </div>
              <input 
                  type="text" 
-                 placeholder="Search by area or property name..." 
-                 className="flex-1 border-none outline-none font-semibold text-[13px] px-4 text-gray-700 bg-transparent"
+                 placeholder="Search area..." 
+                 className="flex-1 border-none outline-none font-semibold text-[13px] px-3 text-gray-800 bg-transparent placeholder:text-gray-400"
                  value={searchQuery}
                  onChange={(e) => setSearchQuery(e.target.value)}
              />
-             <div className="px-5 text-[10px] font-bold text-gray-400 border-l border-gray-100 uppercase tracking-widest hidden lg:block">Map Area</div>
+             <button className="px-4 py-1.5 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition shadow-sm ml-1">
+               Find
+             </button>
           </div>
         </div>
 
@@ -266,9 +278,9 @@ export function PropertyListings() {
             center={[-7.7956, 110.3695]} 
             zoom={13} 
             zoomControl={false}
-            scrollWheelZoom={true} // Now heavily requested scroll map functionality works
+            scrollWheelZoom={true}
             style={{ width: '100%', height: '100%' }}
-            className="z-0 mix-blend-multiply opacity-80"
+            className="z-0 mix-blend-multiply opacity-90"
           >
             <TileLayer
               attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
@@ -280,15 +292,21 @@ export function PropertyListings() {
                  position={prop.coords} 
                  icon={createCustomIcon(prop.price, prop.agentImg)}
               >
-                  <Popup className="custom-popup" closeButton={false}>
-                      <div className="w-[260px] bg-white rounded-[20px] overflow-hidden shadow-2xl p-0 m-0 border-0">
-                        <div className="relative h-[160px] w-full p-2">
-                          <img src={prop.image} alt={prop.title} className="w-full h-full object-cover rounded-[14px]" />
+                  {/* Clean Popup with overriding CSS hiding the gray boxes */}
+                  <Popup closeButton={false} offset={[0, -25]}>
+                      <div className="w-[240px] bg-white rounded-xl shadow-[0_12px_32px_rgba(0,0,0,0.2)] border border-gray-200 p-1 cursor-pointer hover:border-blue-300 transition-colors">
+                        <div className="relative h-[130px] w-full">
+                          <img src={prop.image} alt={prop.title} className="w-full h-full object-cover rounded-lg" />
+                          <div className="absolute top-2 right-2 flex gap-1 bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded shadow-sm">
+                             <Heart className="w-3 h-3 text-white fill-white" />
+                          </div>
                         </div>
-                        <div className="p-4 pt-1 pb-5">
-                          <h3 className="font-bold text-gray-900 text-[15px] mb-0.5 truncate">{prop.title}</h3>
-                          <p className="text-[11px] font-semibold text-gray-400 mb-3 truncate">{prop.location}</p>
-                          <p className="font-bold text-blue-600 text-xl tracking-tight text-right">{prop.price}</p>
+                        <div className="p-3">
+                          <h3 className="font-bold text-gray-900 text-[14px] leading-tight mb-1 truncate">{prop.title}</h3>
+                          <div className="flex justify-between items-end mt-2">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate max-w-[50%]">{prop.location}</p>
+                            <p className="font-bold text-blue-600 text-lg tracking-tight font-mono">{prop.price}</p>
+                          </div>
                         </div>
                       </div>
                   </Popup>
@@ -296,7 +314,6 @@ export function PropertyListings() {
             ))}
           </MapContainer>
         )}
-        {!isMapReady && <div className="absolute inset-0 bg-blue-50/50 animate-pulse"></div>}
       </div>
     </div>
   )

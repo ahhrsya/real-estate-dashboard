@@ -142,4 +142,22 @@
   html {
     @apply font-sans;
     }
+
+/* Leaflet Custom Transparent Popups */
+.leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.leaflet-popup-tip-container {
+  display: none !important;
+}
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  display: none !important;
+}
 }
