@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { ChevronRight, SlidersHorizontal, MapPin, ChevronDown, Check, Search, Heart } from "lucide-react"
+import { ChevronRight, SlidersHorizontal, MapPin, ChevronDown, Check, Search, Heart, Plus } from "lucide-react"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -119,11 +119,24 @@ export function PropertyListings() {
           </div>
         </div>
 
-        {/* Form Filters (Collapsible via state) */}
+        {/* Form Filters (Slide-out Sidebar) */}
+        {/* Overlay background */}
         {showFilters && (
-          <div className="px-6 pb-6 border-b border-gray-100 flex-shrink-0 bg-gray-50/40 shadow-inner animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="absolute inset-0 bg-gray-900/20 backdrop-blur-[1px] z-20 transition-opacity" onClick={() => setShowFilters(false)}></div>
+        )}
+        
+        {/* Filter Sidebar Panel */}
+        <div className={`absolute top-[73px] bottom-0 left-0 w-[360px] bg-white shadow-2xl z-30 transform transition-transform duration-300 ease-out border-r border-gray-100 flex flex-col ${showFilters ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+            <h3 className="font-bold text-gray-900 flex items-center gap-2"><SlidersHorizontal className="w-4 h-4 text-blue-600" /> Advanced Filters</h3>
+            <button onClick={() => setShowFilters(false)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-gray-500 transition">
+              <Plus className="w-5 h-5 rotate-45" />
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
             {/* Form Filters Grid */}
-            <div className="mt-5 grid grid-cols-2 gap-6">
+            <div className="space-y-6">
               <div>
                 <label className="text-gray-500 text-sm font-bold mb-2 block uppercase tracking-widest text-[10px]">Location</label>
                 <div className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 bg-white hover:border-gray-300 transition cursor-pointer shadow-sm">
@@ -133,6 +146,7 @@ export function PropertyListings() {
                   <ChevronDown className="w-4 h-4 text-gray-400" />
                 </div>
               </div>
+              
               <div>
                 <label className="text-gray-500 text-sm font-bold mb-2 block uppercase tracking-widest text-[10px]">Range from you</label>
                 <div className="flex items-center justify-between border border-gray-200 rounded-xl px-4 py-3 bg-white hover:border-gray-300 transition cursor-pointer shadow-sm">
@@ -142,75 +156,78 @@ export function PropertyListings() {
                   <ChevronDown className="w-4 h-4 text-gray-400" />
                 </div>
               </div>
-            </div>
 
-            {/* Price Range */}
-            <div className="mt-6">
-              <label className="text-gray-500 text-sm font-bold mb-5 block uppercase tracking-widest text-[10px]">Price Range</label>
-              <div className="relative px-2 mb-6">
-                <div className="h-1.5 bg-gray-200 rounded-full w-full"></div>
-                <div className="absolute top-0 left-[20%] right-[30%] h-1.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"></div>
-                <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-6 h-6 bg-white border-2 border-blue-600 rounded-lg shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
-                <div className="absolute top-1/2 -translate-y-1/2 right-[30%] w-6 h-6 bg-white border-2 border-blue-600 rounded-lg shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 bg-white shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
-                  <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
-                    <span className="text-gray-400">$</span> <input type="text" defaultValue="1450" className="w-full bg-transparent outline-none font-mono" />
-                  </div>
-                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">min</span>
+              {/* Price Range */}
+              <div className="pt-4 border-t border-gray-100">
+                <label className="text-gray-500 text-sm font-bold mb-5 block uppercase tracking-widest text-[10px]">Price Range</label>
+                <div className="relative px-2 mb-6">
+                  <div className="h-1.5 bg-gray-200 rounded-full w-full"></div>
+                  <div className="absolute top-0 left-[20%] right-[30%] h-1.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 left-[20%] w-6 h-6 bg-white border-2 border-blue-600 rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 right-[30%] w-6 h-6 bg-white border-2 border-blue-600 rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-110 transition"></div>
                 </div>
-                <div className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 bg-white shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
-                  <div className="flex items-center gap-2 text-gray-800 font-bold text-[13px] w-full">
-                    <span className="text-gray-400">$</span> <input type="text" defaultValue="2342,00" className="w-full bg-transparent outline-none font-mono" />
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50/50 shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
+                    <div className="flex items-center gap-1.5 text-gray-800 font-bold text-[13px] w-full">
+                      <span className="text-gray-400">$</span> <input type="text" defaultValue="1450" className="w-full bg-transparent outline-none font-mono" />
+                    </div>
                   </div>
-                  <span className="text-gray-400 text-[10px] font-bold uppercase tracking-wider">max</span>
+                  <span className="text-gray-400 text-xs font-bold">-</span>
+                  <div className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 bg-gray-50/50 shadow-sm flex justify-between items-center transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-100">
+                    <div className="flex items-center gap-1.5 text-gray-800 font-bold text-[13px] w-full">
+                      <span className="text-gray-400">$</span> <input type="text" defaultValue="2342,00" className="w-full bg-transparent outline-none font-mono" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Architecture Types Grid */}
-            <div className="mt-8 mb-4">
-              <label className="text-gray-500 text-sm font-bold mb-4 block uppercase tracking-widest text-[10px]">Architecture Design</label>
-              <div className="grid grid-cols-3 gap-4">
-                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-blue-200 rounded-xl p-3 shadow-sm shadow-blue-50 transition hover:border-blue-300">
-                  <div className="w-5 h-5 rounded border border-blue-600 bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm transition">
-                    <Check className="w-3 h-3" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Modern</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Glass & steel</p>
-                  </div>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300">
-                  <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-gray-50 transition group-hover:border-blue-400">
-                  </div>
-                  <div>
-                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Minimalist</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Clean spaces</p>
-                  </div>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300">
-                  <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-gray-50 transition group-hover:border-blue-400">
-                  </div>
-                  <div>
-                    <p className="font-bold text-[13px] text-gray-900 leading-tight">Luxury</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 leading-snug">Premium build</p>
-                  </div>
-                </label>
+              {/* Architecture Types Grid */}
+              <div className="pt-4 border-t border-gray-100">
+                <label className="text-gray-500 text-sm font-bold mb-4 block uppercase tracking-widest text-[10px]">Architecture Design</label>
+                <div className="grid grid-cols-1 gap-3">
+                  <label className="flex items-center gap-4 cursor-pointer group bg-white border border-blue-200 rounded-xl p-3 shadow-sm shadow-blue-50 transition hover:border-blue-300">
+                    <div className="w-5 h-5 rounded border border-blue-600 bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm transition">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-[13px] text-gray-900 leading-none">Modern</p>
+                      <p className="text-[11px] text-gray-400 mt-1 leading-none">Glass & steel views</p>
+                    </div>
+                  </label>
+                  <label className="flex items-center gap-4 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300 hover:bg-gray-50">
+                    <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-white transition group-hover:border-blue-400">
+                    </div>
+                    <div>
+                      <p className="font-bold text-[13px] text-gray-900 leading-none">Minimalist</p>
+                      <p className="text-[11px] text-gray-400 mt-1 leading-none">Contemporary clean space</p>
+                    </div>
+                  </label>
+                  <label className="flex items-center gap-4 cursor-pointer group bg-white border border-gray-200 rounded-xl p-3 shadow-sm transition hover:border-gray-300 hover:bg-gray-50">
+                    <div className="w-5 h-5 rounded border border-gray-300 flex items-center justify-center shrink-0 bg-white transition group-hover:border-blue-400">
+                    </div>
+                    <div>
+                      <p className="font-bold text-[13px] text-gray-900 leading-none">Luxury</p>
+                      <p className="text-[11px] text-gray-400 mt-1 leading-none">Premium build quality</p>
+                    </div>
+                  </label>
+                </div>
               </div>
-            </div>
-
-            <div className="flex justify-between items-center pt-5 mt-5 border-t border-gray-200/60">
-              <button className="px-5 py-2.5 rounded-xl text-gray-600 font-bold text-sm hover:bg-gray-200 hover:text-gray-800 transition">
-                Clear all filters
-              </button>
-              <button className="bg-gray-900 hover:bg-black text-white px-8 py-2.5 rounded-xl font-bold text-sm transition shadow-lg shadow-gray-900/20">
-                Show ({filteredProperties.length}) results
-              </button>
             </div>
           </div>
-        )}
+          
+          <div className="p-5 border-t border-gray-100 bg-gray-50 flex gap-4">
+            <button 
+               onClick={() => setShowFilters(false)}
+               className="flex-1 px-4 py-3 rounded-xl text-gray-700 font-bold text-sm bg-white border border-gray-200 hover:bg-gray-100 transition shadow-sm">
+              Clear
+            </button>
+            <button 
+               onClick={() => setShowFilters(false)}
+               className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-bold text-sm transition shadow-lg shadow-blue-600/30">
+              Apply ({filteredProperties.length})
+            </button>
+          </div>
+        </div>
 
         {/* Property Grid (Auto fills rest of height) */}
         <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50 custom-scrollbar">
