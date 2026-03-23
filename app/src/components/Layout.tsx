@@ -1,14 +1,19 @@
 import React from "react"
-import { LayoutDashboard, Users, Grid, MapPin, Calendar, Award, PhoneCall, TrendingUp, Search, Bell } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
+import { LayoutDashboard, Users, Grid, Calendar, Award, TrendingUp, Search, Bell, DollarSign, Settings } from "lucide-react"
 
 export function Sidebar() {
+  const location = useLocation()
+  
   const navItems = [
-    { label: "Dashboard", icon: LayoutDashboard, active: true },
-    { label: "Lead Inbox", icon: Users },
-    { label: "Listings", icon: Grid },
-    { label: "Viewings", icon: Calendar },
-    { label: "Offers", icon: TrendingUp },
-    { label: "Performance", icon: Award },
+    { label: "Dashboard", icon: LayoutDashboard, path: "/" },
+    { label: "Lead Inbox", icon: Users, path: "/inbox" },
+    { label: "Listings", icon: Grid, path: "/listings" },
+    { label: "Viewings", icon: Calendar, path: "/viewings" },
+    { label: "Offers", icon: TrendingUp, path: "/offers" },
+    { label: "Performance", icon: Award, path: "/performance" },
+    { label: "Commission", icon: DollarSign, path: "/commission" },
+    { label: "Settings", icon: Settings, path: "/settings" },
   ]
 
   return (
@@ -18,15 +23,19 @@ export function Sidebar() {
       </div>
       
       <nav className="flex-1 px-4 space-y-2">
-        {navItems.map((item) => (
-          <button 
-            key={item.label}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${item.active ? 'bg-white/10 text-white font-semibold' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
-          >
-            <item.icon className="w-5 h-5" />
-            <span className="text-sm">{item.label}</span>
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path
+          return (
+            <Link 
+              key={item.label}
+              to={item.path}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-white/10 text-white font-semibold' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="text-sm">{item.label}</span>
+            </Link>
+          )
+        })}
       </nav>
 
       <div className="p-6">
