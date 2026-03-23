@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, useLocation } from "react-router-dom"
-import { LayoutDashboard, Users, Grid, Calendar, Award, TrendingUp, Search, Bell, DollarSign, Settings } from "lucide-react"
+import { LayoutDashboard, Users, Grid, Calendar, Award, TrendingUp, Search, Bell, DollarSign, Settings, Map as MapIcon } from "lucide-react"
 
 export function Sidebar() {
   const location = useLocation()
@@ -9,6 +9,7 @@ export function Sidebar() {
     { label: "Dashboard", icon: LayoutDashboard, path: "/" },
     { label: "Lead Inbox", icon: Users, path: "/inbox" },
     { label: "Listings", icon: Grid, path: "/listings" },
+    { label: "Map Search", icon: MapIcon, path: "/map-search" },
     { label: "Viewings", icon: Calendar, path: "/viewings" },
     { label: "Offers", icon: TrendingUp, path: "/offers" },
     { label: "Performance", icon: Award, path: "/performance" },

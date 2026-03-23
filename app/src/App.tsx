@@ -9,6 +9,7 @@ import { AgentPerformance } from "./components/pages/AgentPerformance"
 import { CommissionTracker } from "./components/pages/CommissionTracker"
 import { Settings } from "./components/pages/Settings"
 import { PropertyDetail } from "./components/pages/PropertyDetail"
+import { MapSearch } from "./components/pages/MapSearch"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/inbox" element={<LeadInbox />} />
             <Route path="/listings" element={<PropertyListings />} />
             <Route path="/properties/:id" element={<PropertyDetail />} />
+            <Route path="/map-search" element={<MapSearch />} />
             <Route path="/viewings" element={<ViewingScheduler />} />
             <Route path="/offers" element={<OfferPipeline />} />
             <Route path="/performance" element={<AgentPerformance />} />
