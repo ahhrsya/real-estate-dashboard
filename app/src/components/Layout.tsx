@@ -9,7 +9,6 @@ export function Sidebar() {
     { label: "Dashboard", icon: LayoutDashboard, path: "/" },
     { label: "Lead Inbox", icon: Users, path: "/inbox" },
     { label: "Listings", icon: Grid, path: "/listings" },
-    { label: "Map Search", icon: MapIcon, path: "/map-search" },
     { label: "Viewings", icon: Calendar, path: "/viewings" },
     { label: "Offers", icon: TrendingUp, path: "/offers" },
     { label: "Performance", icon: Award, path: "/performance" },
